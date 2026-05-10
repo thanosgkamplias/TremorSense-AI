@@ -1,6 +1,4 @@
 import streamlit as st
-import serial
-import serial.tools.list_ports
 import numpy as np
 from tensorflow.keras.models import load_model
 import pandas as pd
@@ -65,11 +63,16 @@ selected_port = None
 demo_class = None
 
 if mode == "🔌 Live Hardware (USB)":
-    available_ports = [port.device for port in serial.tools.list_ports.comports()]
-    if not available_ports:
-        st.sidebar.warning("No USB devices found. Please connect your Arduino.")
+    if not HAS_SERIAL:
+        # Προστασία: Αν είμαστε στο Cloud, βγάλε μήνυμα και μην ψάχνεις για USB
+        st.sidebar.error("⚠️ USB Mode is disabled in the Cloud version. Please select 'Cloud Demo (Playback)'.")
     else:
-        selected_port = st.sidebar.selectbox("Select Device Port", available_ports)
+        # Αν είμαστε τοπικά, ψάξε κανονικά για το Arduino
+        available_ports = [port.device for port in serial.tools.list_ports.comports()]
+        if not available_ports:
+            st.sidebar.warning("No USB devices found. Please connect your Arduino.")
+        else:
+            selected_port = st.sidebar.selectbox("Select Device Port", available_ports)
         
 elif mode == "☁️ Cloud Demo (Playback)":
     st.sidebar.markdown("---")
@@ -104,8 +107,6 @@ classes = {
 # --- 5. UI PLACEHOLDERS ---
 status_placeholder = st.empty()
 chart_placeholder = st.empty()
-
-# Φτιάχνουμε ένα άδειο κουτί για τον τίτλο, αντί να τον τυπώσουμε κατευθείαν!
 confidence_title = st.empty() 
 
 col1, col2, col3 = st.columns(3)
@@ -124,11 +125,10 @@ def update_dashboard(window_data, pred_buffer):
     # 2. RAW AI PREDICTION
     raw_predictions = model.predict(input_data, verbose=0)[0]
     
-    # 3. SMOOTHING (Moving Average των τελευταίων N προβλέψεων)
+    # 3. SMOOTHING
     pred_buffer.append(raw_predictions)
     smoothed_predictions = np.mean(pred_buffer, axis=0)
     
-    # Χρησιμοποιούμε τις "ομαλοποιημένες" προβλέψεις για το UI
     winner_index = np.argmax(smoothed_predictions)
     winner_name, status_type = classes[winner_index]
     
@@ -140,12 +140,12 @@ def update_dashboard(window_data, pred_buffer):
     else:
         status_placeholder.warning(f"DIAGNOSIS: **{winner_name}**")
         
-    # 5. UPDATE CHART (Kinematic Magnitude)
+    # 5. UPDATE CHART
     df_chart = pd.DataFrame(window_data, columns=['accX', 'accY', 'accZ', 'gyrX', 'gyrY', 'gyrZ', 'magX', 'magY', 'magZ'])
     df_chart['Tremor_Magnitude'] = np.sqrt(df_chart['accX']**2 + df_chart['accY']**2 + df_chart['accZ']**2)
     chart_placeholder.line_chart(df_chart['Tremor_Magnitude'], height=250)
     
-    # 6. UPDATE PROGRESS BARS (Με τα Smoothed Data για να κινούνται "γλυκά")
+    # 6. UPDATE PROGRESS BARS
     prog_ess.progress(float(smoothed_predictions[0]), text=f"Essential: {smoothed_predictions[0]*100:.1f}%")
     prog_norm.progress(float(smoothed_predictions[1]), text=f"Normal: {smoothed_predictions[1]*100:.1f}%")
     prog_park.progress(float(smoothed_predictions[2]), text=f"Parkinson's: {smoothed_predictions[2]*100:.1f}%")
@@ -157,26 +157,41 @@ button_text = "Start Live Diagnosis" if mode == "🔌 Live Hardware (USB)" else 
 if st.button(button_text, use_container_width=False):
     confidence_title.write("**Real-time AI Confidence:**")
     
-    # Φτιάχνουμε τη "μνήμη" του AI (κρατάει τις 5 τελευταίες προβλέψεις)
     prediction_buffer = deque(maxlen=5) 
     
     # ==========================================
     # MODE A: LIVE USB STREAMING
     # ==========================================
-    selected_port = None
-    demo_class = None
-
     if mode == "🔌 Live Hardware (USB)":
         if not HAS_SERIAL:
-            # Αν τρέχει στο Cloud, δείχνει αυτό το ωραίο μήνυμα αντί να κρασάρει!
-            st.sidebar.error("⚠️ USB Mode is disabled in the Cloud version. Please select 'Cloud Demo (Playback)' to see the AI in action.")
-        else:
-            # Αν τρέχει τοπικά, βρίσκει τα USB κανονικά
-            available_ports = [port.device for port in serial.tools.list_ports.comports()]
-            if not available_ports:
-                st.sidebar.warning("No USB devices found. Please connect your Arduino.")
-            else:
-                selected_port = st.sidebar.selectbox("Select Device Port", available_ports)
+            st.error("Live USB Streaming is not available on the Cloud deployment.")
+            st.stop()
+            
+        if not selected_port:
+            st.error("Please connect a device and select a port first.")
+            st.stop()
+
+        try:
+            ser = serial.Serial(selected_port, 115200, timeout=1)
+            st.toast(f"Connected to {selected_port}", icon="🔌")
+            buffer = []
+            
+            while True:
+                line = ser.readline().decode('utf-8').strip()
+                if line:
+                    values = [float(x) for x in line.split(',')]
+                    if len(values) == 9:
+                        buffer.append(values)
+                
+                if len(buffer) == 100:
+                    window_array = np.array(buffer)
+                    update_dashboard(window_array, prediction_buffer) 
+                    buffer = [] 
+
+        except serial.SerialException:
+            st.error(f"Connection failed! Make sure {selected_port} is not in use by the Arduino IDE.")
+        except Exception as e:
+            st.error(f"An error occurred: {e}")
 
     # ==========================================
     # MODE B: CLOUD DEMO (PLAYBACK) - 1 MINUTE DURATION
@@ -213,14 +228,4 @@ if st.button(button_text, use_container_width=False):
                 if current_index + window_size > len(sensor_data):
                     current_index = 0
                 
-                window_array = sensor_data[current_index : current_index + window_size, :]
-                
-                update_dashboard(window_array, prediction_buffer) # Περνάμε το buffer!
-                
-                current_index += step
-                time.sleep(0.12) 
-                
-            st.success(f"1-Minute Continuous Simulation for {demo_class} completed successfully!")
-            
-        except FileNotFoundError:
-            st.error("❌ Dataset not found! Make sure 'tremor_dataset.csv' exists.")
+                window_array = sensor_
