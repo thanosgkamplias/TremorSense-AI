@@ -7,6 +7,14 @@ import pandas as pd
 import time
 from collections import deque
 
+# --- ΠΡΟΣΤΑΣΙΑ ΓΙΑ ΤΟ CLOUD DEPLOYMENT ---
+try:
+    import serial
+    import serial.tools.list_ports
+    HAS_SERIAL = True
+except ImportError:
+    HAS_SERIAL = False
+
 # --- 1. Page Configuration & Custom CSS ---
 st.set_page_config(page_title="TremorSense AI", layout="centered", page_icon="🧠")
 
