@@ -1,6 +1,6 @@
 streamlit
 pandas
 numpy
-tensorflow
+tensorflow-cpu
 pyserial
 scikit-learn
