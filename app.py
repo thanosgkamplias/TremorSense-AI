@@ -163,32 +163,20 @@ if st.button(button_text, use_container_width=False):
     # ==========================================
     # MODE A: LIVE USB STREAMING
     # ==========================================
+    selected_port = None
+    demo_class = None
+
     if mode == "🔌 Live Hardware (USB)":
-        if not selected_port:
-            st.error("Please connect a device and select a port first.")
-            st.stop()
-
-        try:
-            ser = serial.Serial(selected_port, 115200, timeout=1)
-            st.toast(f"Connected to {selected_port}", icon="🔌")
-            buffer = []
-            
-            while True:
-                line = ser.readline().decode('utf-8').strip()
-                if line:
-                    values = [float(x) for x in line.split(',')]
-                    if len(values) == 9:
-                        buffer.append(values)
-                
-                if len(buffer) == 100:
-                    window_array = np.array(buffer)
-                    update_dashboard(window_array, prediction_buffer) # Περνάμε το buffer!
-                    buffer = [] 
-
-        except serial.SerialException:
-            st.error(f"Connection failed! Make sure {selected_port} is not in use by the Arduino IDE.")
-        except Exception as e:
-            st.error(f"An error occurred: {e}")
+        if not HAS_SERIAL:
+            # Αν τρέχει στο Cloud, δείχνει αυτό το ωραίο μήνυμα αντί να κρασάρει!
+            st.sidebar.error("⚠️ USB Mode is disabled in the Cloud version. Please select 'Cloud Demo (Playback)' to see the AI in action.")
+        else:
+            # Αν τρέχει τοπικά, βρίσκει τα USB κανονικά
+            available_ports = [port.device for port in serial.tools.list_ports.comports()]
+            if not available_ports:
+                st.sidebar.warning("No USB devices found. Please connect your Arduino.")
+            else:
+                selected_port = st.sidebar.selectbox("Select Device Port", available_ports)
 
     # ==========================================
     # MODE B: CLOUD DEMO (PLAYBACK) - 1 MINUTE DURATION
