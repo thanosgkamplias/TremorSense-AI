@@ -64,10 +64,8 @@ demo_class = None
 
 if mode == "🔌 Live Hardware (USB)":
     if not HAS_SERIAL:
-        # Προστασία: Αν είμαστε στο Cloud, βγάλε μήνυμα και μην ψάχνεις για USB
         st.sidebar.error("⚠️ USB Mode is disabled in the Cloud version. Please select 'Cloud Demo (Playback)'.")
     else:
-        # Αν είμαστε τοπικά, ψάξε κανονικά για το Arduino
         available_ports = [port.device for port in serial.tools.list_ports.comports()]
         if not available_ports:
             st.sidebar.warning("No USB devices found. Please connect your Arduino.")
@@ -228,4 +226,14 @@ if st.button(button_text, use_container_width=False):
                 if current_index + window_size > len(sensor_data):
                     current_index = 0
                 
-                window_array = sensor_
+                window_array = sensor_data[current_index : current_index + window_size, :]
+                
+                update_dashboard(window_array, prediction_buffer) 
+                
+                current_index += step
+                time.sleep(0.12) 
+                
+            st.success(f"1-Minute Continuous Simulation for {demo_class} completed successfully!")
+            
+        except FileNotFoundError:
+            st.error("❌ Dataset not found! Make sure 'tremor_dataset.csv' exists.")
