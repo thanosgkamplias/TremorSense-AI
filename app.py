@@ -37,6 +37,17 @@ st.markdown("""
         color: #1565C0;
         border-color: #1565C0;
     }
+
+    /* "Επιθετικό" κεντράρισμα για το κρυφό κείμενο του Streamlit */
+    div.stButton > button:first-child p, 
+    div.stButton > button:first-child div {
+        text-align: center !important;
+        margin: 0 auto !important;
+        display: flex !important;
+        justify-content: center !important;
+        width: 100% !important;
+    }
+    
     h1, h2, h3 {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
