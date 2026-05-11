@@ -107,7 +107,7 @@ if show_guide:
     # Κουμπί επιστροφής. Όταν πατηθεί, το Streamlit κάνει refresh και επειδή 
     # το πλαϊνό κουμπί δεν είναι πλέον πατημένο, γυρνάει αυτόματα στο Dashboard!
     st.button("⬅️ Back to AI Dashboard") 
-    st.title("📖 Understanding Tremor Pathologies")
+    st.title("Understanding Tremor Pathologies")
     st.markdown("Welcome to the educational guide. This section explains the different types of tremors our AI classifies and provides instructions on how to physically simulate them if you are testing the system locally with your own hardware.")
     st.divider()
 
@@ -135,8 +135,6 @@ if show_guide:
     * **How to simulate:** Hold the sensor outstretched in the air (unsupported). Vibrate your hand rapidly (faster than the Parkinson's simulation) while trying to maintain that posture or while moving the sensor toward a target.
     """)
     
-    st.divider()
-
     st.stop()
 
 # --- 2. HEADER SECTION ---
