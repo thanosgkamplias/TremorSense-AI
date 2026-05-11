@@ -107,8 +107,8 @@ elif mode == "☁️ Cloud Demo (Playback)":
     )
 # --- NEW: INFO SECTION (Ο Διακόπτης για το άρθρο) ---
 st.sidebar.markdown("---")
-st.sidebar.subheader("ℹ️ Info")
-show_guide = st.sidebar.toggle("📖 Medical & Simulation Guide")
+st.sidebar.subheader("Info")
+show_guide = st.sidebar.toggle("Medical & Simulation Guide")
 
 st.sidebar.markdown("---")
 st.sidebar.info("Model Accuracy: **92.2%**\n\nSensor Target: **100 Hz**")
