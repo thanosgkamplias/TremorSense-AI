@@ -109,7 +109,6 @@ def load_ai_model():
 
 try:
     model = load_ai_model()
-    st.toast("AI Model loaded successfully!", icon="✅")
 except Exception as e:
     st.error("Failed to load 'tremor_model.keras'. Please ensure the file is in the directory.")
     st.stop()
