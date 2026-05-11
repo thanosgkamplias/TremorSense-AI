@@ -29,9 +29,7 @@ st.markdown("""
         font-weight: 500;
         box-shadow: none;                   
         transition: all 0.2s ease;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        display: block;
         margin: 0 auto;                     
     }
     div.stButton > button:first-child:hover {
