@@ -64,6 +64,13 @@ st.markdown("""
 """, unsafe_allow_html=True)
 st.divider()
 
+# 1. Προσθήκη του Logo στο πάνω μέρος του Sidebar
+try:
+    st.sidebar.image("tremorsense_logo.png", use_container_width=True)
+    st.sidebar.markdown("<br>", unsafe_allow_html=True) # Προσθέτει λίγο κενό χώρο (ανάσα) κάτω από το logo
+except:
+    pass # Αν δεν βρει το αρχείο, απλά προχωράει χωρίς να βγάλει error
+
 # --- 3. SIDEBAR: MODE SELECTION ---
 st.sidebar.header("System Settings")
 
@@ -207,7 +214,7 @@ if st.button(button_text, use_container_width=False):
                     window_array = np.array(buffer)
                     update_dashboard(window_array, prediction_buffer) 
                     buffer = [] 
-
+0
         except serial.SerialException:
             st.error(f"Connection failed! Make sure {selected_port} is not in use by the Arduino IDE.")
         except Exception as e:
