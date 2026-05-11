@@ -14,7 +14,7 @@ except ImportError:
     HAS_SERIAL = False
 
 # --- 1. Page Configuration & Custom CSS ---
-st.set_page_config(page_title="TremorSense AI", layout="centered", page_icon="🧠")
+st.set_page_config(page_title="TremorSense AI", layout="centered", page_icon="tremorsense_page_icon.png")
 
 # Custom CSS for a modern, clinical, and minimal UI
 st.markdown("""
