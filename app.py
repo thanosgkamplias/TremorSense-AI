@@ -105,6 +105,10 @@ elif mode == "☁️ Cloud Demo (Playback)":
         "Select Pathology to Simulate:",
         ("Normal (Healthy Baseline)", "Parkinson's Disease", "Essential Tremor")
     )
+# --- NEW: INFO SECTION (Ο Διακόπτης για το άρθρο) ---
+st.sidebar.markdown("---")
+st.sidebar.subheader("ℹ️ Info")
+show_guide = st.sidebar.toggle("📖 Medical & Simulation Guide")
 
 st.sidebar.markdown("---")
 st.sidebar.info("Model Accuracy: **92.2%**\n\nSensor Target: **100 Hz**")
