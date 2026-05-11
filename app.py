@@ -64,11 +64,17 @@ demo_class = None
 
 if mode == "🔌 Live Hardware (USB)":
     if not HAS_SERIAL:
-        st.sidebar.error("⚠️ USB Mode is disabled in the Cloud version. Please select 'Cloud Demo (Playback)'.")
+        st.sidebar.info("💡 **Edge IoT Mode:** Live USB streaming is designed for local environments. Switch to **Cloud Demo**.")
     else:
         available_ports = [port.device for port in serial.tools.list_ports.comports()]
         if not available_ports:
-            st.sidebar.warning("No USB devices found. Please connect your Arduino.")
+            # ΤΟ ΝΕΟ ΕΠΑΓΓΕΛΜΑΤΙΚΟ ΜΗΝΥΜΑ
+            st.sidebar.info(
+                "💡 **Edge IoT Mode**\n\n"
+                "No hardware detected.\n\n"
+                "👉 **Viewing online?** Switch to **Cloud Demo (Playback)** above to see the AI in action.\n\n"
+                "👉 **Running locally?** Plug in your Arduino Nano 33 BLE via USB."
+            )
         else:
             selected_port = st.sidebar.selectbox("Select Device Port", available_ports)
         
@@ -157,16 +163,13 @@ if st.button(button_text, use_container_width=False):
     
     prediction_buffer = deque(maxlen=5) 
     
-    # ==========================================
+# ==========================================
     # MODE A: LIVE USB STREAMING
     # ==========================================
     if mode == "🔌 Live Hardware (USB)":
-        if not HAS_SERIAL:
-            st.error("Live USB Streaming is not available on the Cloud deployment.")
-            st.stop()
-            
-        if not selected_port:
-            st.error("Please connect a device and select a port first.")
+        if not HAS_SERIAL or not selected_port:
+            # ΝΕΟ ΜΗΝΥΜΑ ΑΝΤΙ ΓΙΑ ERROR
+            st.warning("⚠️ **Hardware Required:** To run real-time inference, an Arduino must be connected via USB. Please switch to the **☁️ Cloud Demo (Playback)** mode from the sidebar to evaluate the AI's performance.", icon="🤖")
             st.stop()
 
         try:
