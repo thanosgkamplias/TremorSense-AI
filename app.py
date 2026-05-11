@@ -49,21 +49,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- 2. HEADER SECTION ---
-try:
-    st.image("tremorsense_logo.png", width=300)
-except:
-    st.title("🧠 TremorSense AI") # Fallback if logo is missing
-st.markdown("#### Real-time Neurological Tremor Analysis System")
-
-st.markdown("""
-    <p style='font-size: 16px; color: #808495; line-height: 1.5;'>
-        An AI-powered application that analyzes motion data from wearable sensors to instantly 
-        detect and differentiate between Parkinson's Disease, Essential Tremor, and healthy movements.
-    </p>
-""", unsafe_allow_html=True)
-st.divider()
-
 # 1. Προσθήκη του Logo στο πάνω μέρος του Sidebar
 try:
     st.sidebar.image("tremorsense_logo.png", use_container_width=True)
@@ -112,6 +97,58 @@ show_guide = st.sidebar.toggle("Medical & Simulation Guide")
 
 st.sidebar.markdown("---")
 st.sidebar.info("Model Accuracy: **92.2%**\n\nSensor Target: **100 Hz**")
+
+# =====================================================================
+# ΣΕΛΙΔΑ 2: EDUCATIONAL GUIDE (Εμφανίζεται μόνο αν ο διακόπτης είναι ON)
+# =====================================================================
+if show_guide:
+    st.title("📖 Understanding Tremor Pathologies")
+    st.markdown("Welcome to the educational guide. This section explains the different types of tremors our AI classifies and provides instructions on how to physically simulate them if you are testing the system locally with your own hardware.")
+    st.divider()
+
+    # 1. Normal
+    st.subheader("✅ Normal (Healthy Baseline)")
+    st.markdown("""
+    **What it is:** Everyone has a tiny, invisible baseline tremor called a *physiologic tremor*. It is completely normal and usually not visible to the naked eye.
+    * **Frequency:** Typically high frequency (8-12 Hz) but with extremely low, almost imperceptible amplitude.
+    * **How to simulate:** Rest your hand holding the sensor on a table, or hold it in the air while keeping your hand as perfectly still and relaxed as possible. 
+    """)
+
+    # 2. Parkinson's
+    st.subheader("⚠️ Parkinson's Disease (Resting Tremor)")
+    st.markdown("""
+    **What it is:** The classic tremor associated with Parkinson's disease is a *resting tremor*. It occurs when the muscle is relaxed and fully supported against gravity (e.g., hands resting in the lap). It often looks like a "pill-rolling" motion of the fingers. It typically decreases or stops during voluntary movement.
+    * **Frequency:** Low frequency, typically **4 to 6 Hz**.
+    * **How to simulate:** Rest your arm completely flat on a desk or your leg. Vibrate the sensor slowly and rhythmically (about 4 to 6 beats per second). Stop shaking immediately if you lift your hand.
+    """)
+
+    # 3. Essential
+    st.subheader("🟠 Essential Tremor (Action Tremor)")
+    st.markdown("""
+    **What it is:** Essential tremor is the most common movement disorder. Unlike Parkinson's, it is an *action or postural tremor*. It becomes most noticeable when you are using your hands to do something (like holding a glass of water, writing, or pointing) or holding your arms outstretched against gravity.
+    * **Frequency:** Medium to high frequency, typically **4 to 12 Hz** (usually faster than Parkinson's).
+    * **How to simulate:** Hold the sensor outstretched in the air (unsupported). Vibrate your hand rapidly (faster than the Parkinson's simulation) while trying to maintain that posture or while moving the sensor toward a target.
+    """)
+    
+    st.divider()
+    st.info("💡 **Ready to test?** Toggle off the switch in the sidebar to return to the AI Dashboard.")
+    
+    # Το st.stop() διακόπτει εδώ τον κώδικα ώστε να μην εμφανιστεί το γράφημα από κάτω
+    st.stop()
+
+# =====================================================================
+# ΣΕΛΙΔΑ 1: AI DASHBOARD (Εμφανίζεται αν ο διακόπτης είναι OFF)
+# =====================================================================
+st.title("🧠 TremorSense AI") # Fallback if logo is missing
+st.markdown("#### Real-time Neurological Tremor Analysis System")
+
+st.markdown("""
+    <p style='font-size: 16px; color: #808495; line-height: 1.5;'>
+        An AI-powered application that analyzes motion data from wearable sensors to instantly 
+        detect and differentiate between Parkinson's Disease, Essential Tremor, and healthy movements.
+    </p>
+""", unsafe_allow_html=True)
+st.divider()
 
 # --- 4. LOAD AI MODEL ---
 @st.cache_resource
@@ -193,7 +230,7 @@ if st.button(button_text, use_container_width=False):
     
     prediction_buffer = deque(maxlen=5) 
     
-# ==========================================
+    # ==========================================
     # MODE A: LIVE USB STREAMING
     # ==========================================
     if mode == "🔌 Live Hardware (USB)":
