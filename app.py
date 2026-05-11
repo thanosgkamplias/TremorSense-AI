@@ -52,21 +52,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- 2. HEADER SECTION ---
-try:
-    st.image("tremorsense_logo.png", width=300)
-except:
-    st.title("🧠 TremorSense AI") # Fallback if logo is missing
-st.markdown("#### Real-time Neurological Tremor Analysis System")
-
-st.markdown("""
-    <p style='font-size: 16px; color: #808495; line-height: 1.5;'>
-        An AI-powered application that analyzes motion data from wearable sensors to instantly 
-        detect and differentiate between Parkinson's Disease, Essential Tremor, and healthy movements.
-    </p>
-""", unsafe_allow_html=True)
-st.divider()
-
 # 1. Προσθήκη του Logo στο πάνω μέρος του Sidebar
 try:
     st.sidebar.image("tremorsense_logo.png", use_container_width=True)
@@ -153,6 +138,21 @@ if show_guide:
     st.divider()
 
     st.stop()
+
+# --- 2. HEADER SECTION ---
+try:
+    st.image("tremorsense_logo.png", width=300)
+except:
+    st.title("🧠 TremorSense AI") # Fallback if logo is missing
+st.markdown("#### Real-time Neurological Tremor Analysis System")
+
+st.markdown("""
+    <p style='font-size: 16px; color: #808495; line-height: 1.5;'>
+        An AI-powered application that analyzes motion data from wearable sensors to instantly 
+        detect and differentiate between Parkinson's Disease, Essential Tremor, and healthy movements.
+    </p>
+""", unsafe_allow_html=True)
+st.divider()
 
 # --- 4. LOAD AI MODEL ---
 @st.cache_resource
