@@ -214,7 +214,7 @@ if st.button(button_text, use_container_width=False):
                     window_array = np.array(buffer)
                     update_dashboard(window_array, prediction_buffer) 
                     buffer = [] 
-0
+                    
         except serial.SerialException:
             st.error(f"Connection failed! Make sure {selected_port} is not in use by the Arduino IDE.")
         except Exception as e:
