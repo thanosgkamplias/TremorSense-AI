@@ -40,12 +40,6 @@ st.markdown("""
     h1, h2, h3 {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-
-    /* --- ΜΕΙΩΣΗ ΚΕΝΟΥ DIVIDER --- */
-    div[data-testid="stMarkdownContainer"] hr {
-        margin-top: 10px !important;   
-        margin-bottom: 15px !important;
-    }
     </style>
 """, unsafe_allow_html=True)
 
