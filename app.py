@@ -14,9 +14,8 @@ except ImportError:
     HAS_SERIAL = False
 
 # --- 1. Page Configuration & Custom CSS ---
-st.set_page_config(page_title="TremorSense AI", layout="centered", page_icon="tremorsense_page_icon.png")
+st.set_page_config(page_title="TremorSense AI", layout="centered", page_icon="🧠")
 
-# Custom CSS for a modern, clinical, and minimal UI
 st.markdown("""
     <style>
     div.stButton > button:first-child {
@@ -40,24 +39,17 @@ st.markdown("""
     h1, h2, h3 {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-    
-    /* --- ΜΕΙΩΣΗ ΚΕΝΟΥ DIVIDER --- */
-    div[data-testid="stMarkdownContainer"] hr {
-        margin-top: 10px !important;   
-        margin-bottom: 15px !important;
-    }
     </style>
 """, unsafe_allow_html=True)
 
-# 1. Προσθήκη του Logo στο πάνω μέρος του Sidebar
+# --- 2. SIDEBAR (Λογότυπο & Ρυθμίσεις) ---
 try:
     st.sidebar.image("tremorsense_logo.png", use_container_width=True)
-    st.sidebar.markdown("<br>", unsafe_allow_html=True) # Προσθέτει λίγο κενό χώρο (ανάσα) κάτω από το logo
+    st.sidebar.markdown("<br>", unsafe_allow_html=True)
 except:
-    pass # Αν δεν βρει το αρχείο, απλά προχωράει χωρίς να βγάλει error
+    pass 
 
-# --- 3. SIDEBAR: MODE SELECTION ---
-st.sidebar.header("System Settings")
+st.sidebar.header("⚙️ System Settings")
 
 mode = st.sidebar.radio(
     "Data Source Mode:",
@@ -69,16 +61,20 @@ demo_class = None
 
 if mode == "🔌 Live Hardware (USB)":
     if not HAS_SERIAL:
-        st.sidebar.info("💡 **Edge IoT Mode:** Live USB streaming is designed for local environments. Switch to **Cloud Demo**.")
+        st.sidebar.info(
+            "**Edge IoT Mode**\n\n"
+            "No hardware detected.\n\n"
+            "∘ **Viewing online?** Switch to **Cloud Demo (Playback)** above to see the AI in action.\n\n"
+            "∘ **Running locally?** Plug in your Arduino Nano 33 BLE via USB."
+        )
     else:
         available_ports = [port.device for port in serial.tools.list_ports.comports()]
         if not available_ports:
-            # ΤΟ ΝΕΟ ΕΠΑΓΓΕΛΜΑΤΙΚΟ ΜΗΝΥΜΑ
             st.sidebar.info(
                 "**Edge IoT Mode**\n\n"
                 "No hardware detected.\n\n"
-                "● **Viewing online?** Switch to **Cloud Demo (Playback)** above to see the AI in action.\n\n"
-                "● **Running locally?** Plug in your Arduino Nano 33 BLE via USB."
+                "∘ **Viewing online?** Switch to **Cloud Demo (Playback)** above to see the AI in action.\n\n"
+                "∘ **Running locally?** Plug in your Arduino Nano 33 BLE via USB."
             )
         else:
             selected_port = st.sidebar.selectbox("Select Device Port", available_ports)
@@ -90,16 +86,18 @@ elif mode == "☁️ Cloud Demo (Playback)":
         "Select Pathology to Simulate:",
         ("Normal (Healthy Baseline)", "Parkinson's Disease", "Essential Tremor")
     )
-# --- NEW: INFO SECTION (Ο Διακόπτης για το άρθρο) ---
+
+# --- NEW: INFO SECTION (Άμεσο Κουμπί) ---
 st.sidebar.markdown("---")
-st.sidebar.subheader("Info")
-show_guide = st.sidebar.toggle("Medical & Simulation Guide")
+st.sidebar.subheader("ℹ️ Info")
+show_guide = st.sidebar.button("📖 Medical & Simulation Guide", use_container_width=True)
 
 st.sidebar.markdown("---")
 st.sidebar.info("Model Accuracy: **92.2%**\n\nSensor Target: **100 Hz**")
 
+
 # =====================================================================
-# ΣΕΛΙΔΑ 2: EDUCATIONAL GUIDE (Εμφανίζεται μόνο αν ο διακόπτης είναι ON)
+# ΣΕΛΙΔΑ 2: EDUCATIONAL GUIDE (Εμφανίζεται όταν πατηθεί το κουμπί)
 # =====================================================================
 if show_guide:
     st.title("📖 Understanding Tremor Pathologies")
@@ -131,15 +129,20 @@ if show_guide:
     """)
     
     st.divider()
-    st.info("💡 **Ready to test?** Toggle off the switch in the sidebar to return to the AI Dashboard.")
     
-    # Το st.stop() διακόπτει εδώ τον κώδικα ώστε να μην εμφανιστεί το γράφημα από κάτω
-    st.stop()
+    # Κουμπί επιστροφής. Όταν πατηθεί, το Streamlit κάνει refresh και επειδή 
+    # το πλαϊνό κουμπί δεν είναι πλέον πατημένο, γυρνάει αυτόματα στο Dashboard!
+    st.button("⬅️ Back to AI Dashboard") 
+    
+    st.stop() 
+
 
 # =====================================================================
-# ΣΕΛΙΔΑ 1: AI DASHBOARD (Εμφανίζεται αν ο διακόπτης είναι OFF)
+# ΣΕΛΙΔΑ 1: AI DASHBOARD (Το κανονικό σου πρόγραμμα)
 # =====================================================================
-st.title("🧠 TremorSense AI") # Fallback if logo is missing
+
+# --- 3. HEADER SECTION (Κεντρική Οθόνη) ---
+st.title("🧠 TremorSense AI")
 st.markdown("#### Real-time Neurological Tremor Analysis System")
 
 st.markdown("""
@@ -148,9 +151,10 @@ st.markdown("""
         detect and differentiate between Parkinson's Disease, Essential Tremor, and healthy movements.
     </p>
 """, unsafe_allow_html=True)
+
 st.divider()
 
-# --- 4. LOAD AI MODEL ---
+# --- 4. LOAD AI MODEL (Αθόρυβη φόρτωση) ---
 @st.cache_resource
 def load_ai_model():
     return load_model('tremor_model.keras')
@@ -161,7 +165,6 @@ except Exception as e:
     st.error("Failed to load 'tremor_model.keras'. Please ensure the file is in the directory.")
     st.stop()
 
-# Model Output Classes mapping
 classes = {
     0: ("🟠 ESSENTIAL TREMOR (Action)", "warning"),
     1: ("✅ NORMAL (No Tremor)", "success"),
@@ -178,25 +181,19 @@ prog_ess = col1.empty()
 prog_norm = col2.empty()
 prog_park = col3.empty()
 
-# --- 6. CORE UPDATE FUNCTION (ME SMOOTHING) ---
+# --- 6. CORE UPDATE FUNCTION ---
 def update_dashboard(window_data, pred_buffer):
-    """ window_data is a numpy array of shape (100, 9) """
-    
-    # 1. DATA PREPROCESSING
     window_centered = window_data - np.mean(window_data, axis=0)
     input_data = window_centered.reshape(1, 100, 9)
     
-    # 2. RAW AI PREDICTION
     raw_predictions = model.predict(input_data, verbose=0)[0]
     
-    # 3. SMOOTHING
     pred_buffer.append(raw_predictions)
     smoothed_predictions = np.mean(pred_buffer, axis=0)
     
     winner_index = np.argmax(smoothed_predictions)
     winner_name, status_type = classes[winner_index]
     
-    # 4. UPDATE UI STATUS
     if status_type == "success":
         status_placeholder.success(f"DIAGNOSIS: **{winner_name}**")
     elif status_type == "error":
@@ -204,11 +201,9 @@ def update_dashboard(window_data, pred_buffer):
     else:
         status_placeholder.warning(f"DIAGNOSIS: **{winner_name}**")
         
-# 5. UPDATE CHART (Kinematic Magnitude)
     df_chart = pd.DataFrame(window_data, columns=['accX', 'accY', 'accZ', 'gyrX', 'gyrY', 'gyrZ', 'magX', 'magY', 'magZ'])
     df_chart['Tremor_Magnitude'] = np.sqrt(df_chart['accX']**2 + df_chart['accY']**2 + df_chart['accZ']**2)
     
-    # Προσθέσαμε x_label και y_label για επαγγελματικό γράφημα!
     chart_placeholder.line_chart(
         df_chart['Tremor_Magnitude'], 
         height=250,
@@ -216,11 +211,9 @@ def update_dashboard(window_data, pred_buffer):
         y_label="Tremor Magnitude (Acceleration)"
     )
     
-    # 6. UPDATE PROGRESS BARS
     prog_ess.progress(float(smoothed_predictions[0]), text=f"Essential: {smoothed_predictions[0]*100:.1f}%")
     prog_norm.progress(float(smoothed_predictions[1]), text=f"Normal: {smoothed_predictions[1]*100:.1f}%")
     prog_park.progress(float(smoothed_predictions[2]), text=f"Parkinson's: {smoothed_predictions[2]*100:.1f}%")
-
 
 # --- 7. THE MAIN EXECUTION LOOP ---
 button_text = "Start Live Diagnosis" if mode == "🔌 Live Hardware (USB)" else f"Start {demo_class} Simulation"
@@ -230,13 +223,9 @@ if st.button(button_text, use_container_width=False):
     
     prediction_buffer = deque(maxlen=5) 
     
-    # ==========================================
-    # MODE A: LIVE USB STREAMING
-    # ==========================================
     if mode == "🔌 Live Hardware (USB)":
         if not HAS_SERIAL or not selected_port:
-            # ΝΕΟ ΜΗΝΥΜΑ ΑΝΤΙ ΓΙΑ ERROR
-            st.warning("⚠️ **Hardware Required:** To run real-time inference, an Arduino must be connected via USB. Please switch to the **Cloud Demo (Playback)** mode from the sidebar to evaluate the AI's performance.")
+            st.warning("**Hardware Required:** To run real-time inference, an Arduino must be connected via USB. Please switch to the **Cloud Demo (Playback)** mode from the sidebar to evaluate the AI's performance.", icon="⚠️")
             st.stop()
 
         try:
@@ -255,55 +244,11 @@ if st.button(button_text, use_container_width=False):
                     window_array = np.array(buffer)
                     update_dashboard(window_array, prediction_buffer) 
                     buffer = [] 
-                    
+
         except serial.SerialException:
             st.error(f"Connection failed! Make sure {selected_port} is not in use by the Arduino IDE.")
         except Exception as e:
             st.error(f"An error occurred: {e}")
 
-    # ==========================================
-    # MODE B: CLOUD DEMO (PLAYBACK) - 1 MINUTE DURATION
-    # ==========================================
     elif mode == "☁️ Cloud Demo (Playback)":
-        st.toast(f"Starting 60-second Simulation for {demo_class}...", icon="☁️")
-        
-        try:
-            df_demo = pd.read_csv('tremor_dataset.csv')
-            
-            label_mapping = {
-                "Normal (Healthy Baseline)": "Normal",
-                "Parkinson's Disease": "Parkinson_Tremor",
-                "Essential Tremor": "Essential_Tremor"
-            }
-            target_label = label_mapping[demo_class]
-            
-            filtered_df = df_demo[df_demo['Label'] == target_label]
-            
-            if filtered_df.empty:
-                st.error(f"No data found for {demo_class}!")
-                st.stop()
-                
-            sensor_data = filtered_df[['accX', 'accY', 'accZ', 'gyrX', 'gyrY', 'gyrZ', 'magX', 'magY', 'magZ']].values
-            
-            window_size = 100
-            step = 25 
-            
-            duration_seconds = 60
-            start_time = time.time()
-            current_index = 0
-            
-            while time.time() - start_time < duration_seconds:
-                if current_index + window_size > len(sensor_data):
-                    current_index = 0
-                
-                window_array = sensor_data[current_index : current_index + window_size, :]
-                
-                update_dashboard(window_array, prediction_buffer) 
-                
-                current_index += step
-                time.sleep(0.12) 
-                
-            st.success(f"1-Minute Continuous Simulation for {demo_class} completed successfully!")
-            
-        except FileNotFoundError:
-            st.error("❌ Dataset not found! Make sure 'tremor_dataset.csv' exists.")
+        st.toast(f"Starting 60-second Simulation for {demo_class}...", icon="☁
