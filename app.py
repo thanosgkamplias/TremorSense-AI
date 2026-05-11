@@ -251,4 +251,45 @@ if st.button(button_text, use_container_width=False):
             st.error(f"An error occurred: {e}")
 
     elif mode == "☁️ Cloud Demo (Playback)":
-        st.toast(f"Starting 60-second Simulation for {demo_class}...", icon="☁
+        st.toast(f"Starting 60-second Simulation for {demo_class}...", icon="☁️")
+        
+        try:
+            df_demo = pd.read_csv('tremor_dataset.csv')
+            
+            label_mapping = {
+                "Normal (Healthy Baseline)": "Normal",
+                "Parkinson's Disease": "Parkinson_Tremor",
+                "Essential Tremor": "Essential_Tremor"
+            }
+            target_label = label_mapping[demo_class]
+            
+            filtered_df = df_demo[df_demo['Label'] == target_label]
+            
+            if filtered_df.empty:
+                st.error(f"No data found for {demo_class}!")
+                st.stop()
+                
+            sensor_data = filtered_df[['accX', 'accY', 'accZ', 'gyrX', 'gyrY', 'gyrZ', 'magX', 'magY', 'magZ']].values
+            
+            window_size = 100
+            step = 25 
+            
+            duration_seconds = 60
+            start_time = time.time()
+            current_index = 0
+            
+            while time.time() - start_time < duration_seconds:
+                if current_index + window_size > len(sensor_data):
+                    current_index = 0
+                
+                window_array = sensor_data[current_index : current_index + window_size, :]
+                
+                update_dashboard(window_array, prediction_buffer) 
+                
+                current_index += step
+                time.sleep(0.12) 
+                
+            st.success(f"1-Minute Continuous Simulation for {demo_class} completed successfully!")
+            
+        except FileNotFoundError:
+            st.error("❌ Dataset not found! Make sure 'tremor_dataset.csv' exists.")
