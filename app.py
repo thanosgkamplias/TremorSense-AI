@@ -85,8 +85,8 @@ if mode == "🔌 Live Hardware (USB)":
             st.sidebar.info(
                 "**Edge IoT Mode**\n\n"
                 "No hardware detected.\n\n"
-                "• **Viewing online?** Switch to **Cloud Demo (Playback)** above to see the AI in action.\n\n"
-                "• **Running locally?** Plug in your Arduino Nano 33 BLE via USB."
+                "∘ **Viewing online?** Switch to **Cloud Demo (Playback)** above to see the AI in action.\n\n"
+                "∘ **Running locally?** Plug in your Arduino Nano 33 BLE via USB."
             )
         else:
             selected_port = st.sidebar.selectbox("Select Device Port", available_ports)
