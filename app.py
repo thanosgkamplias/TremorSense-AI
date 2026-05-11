@@ -88,15 +88,19 @@ elif mode == "☁️ Cloud Demo (Playback)":
     )
 
 # --- NEW: INFO SECTION (Άμεσο Κουμπί) ---
+# Αρχικοποιούμε τη μνήμη της σελίδας αν δεν υπάρχει
+if 'current_page' not in st.session_state:
+    st.session_state.current_page = "dashboard"
+    
 st.sidebar.markdown("---")
-show_guide = st.sidebar.button("🛈 Medical & Simulation Guide", use_container_width=True)
+if st.sidebar.button("🛈 Medical & Simulation Guide", use_container_width=True)
 st.sidebar.markdown("---")
 st.sidebar.info("Model Accuracy: **92.2%**\n\nSensor Target: **100 Hz**")
 
 # =====================================================================
 # ΣΕΛΙΔΑ 2: EDUCATIONAL GUIDE (Εμφανίζεται όταν πατηθεί το κουμπί)
 # =====================================================================
-if show_guide:
+if st.session_state.current_page == "guide":
     # Κουμπί επιστροφής. Όταν πατηθεί, το Streamlit κάνει refresh και επειδή 
     # το πλαϊνό κουμπί δεν είναι πλέον πατημένο, γυρνάει αυτόματα στο Dashboard!
     st.button("❮ Back to AI Dashboard") 
