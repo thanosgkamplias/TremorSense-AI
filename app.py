@@ -49,6 +49,13 @@ try:
 except:
     st.title("🧠 TremorSense AI") # Fallback if logo is missing
 st.markdown("#### Real-time Neurological Tremor Analysis System")
+
+st.markdown("""
+    <p style='font-size: 16px; color: #808495; line-height: 1.5;'>
+        An AI-powered application that analyzes motion data from wearable sensors to instantly 
+        detect and differentiate between Parkinson's Disease, Essential Tremor, and healthy movements.
+    </p>
+""", unsafe_allow_html=True)
 st.divider()
 
 # --- 3. SIDEBAR: MODE SELECTION ---
