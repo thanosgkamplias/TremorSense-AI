@@ -109,6 +109,12 @@ elif mode == "☁️ Cloud Demo (Playback)":
         ("Normal (Healthy Baseline)", "Parkinson's Disease", "Essential Tremor")
     )
 
+# --- NEW: INFO SECTION (Άμεσο Κουμπί) ---
+st.sidebar.markdown("---")
+show_guide = st.sidebar.button("🛈︎ Medical & Simulation Guide", use_container_width=True)
+st.sidebar.markdown("---")
+st.sidebar.info("Model Accuracy: **92.2%**\n\nSensor Target: **100 Hz**")
+
 # =====================================================================
 # ΣΕΛΙΔΑ 2: EDUCATIONAL GUIDE (Εμφανίζεται όταν πατηθεί το κουμπί)
 # =====================================================================
@@ -147,12 +153,6 @@ if show_guide:
     st.divider()
 
     st.stop()
-
-# --- NEW: INFO SECTION (Άμεσο Κουμπί) ---
-st.sidebar.markdown("---")
-show_guide = st.sidebar.button("🛈︎ Medical & Simulation Guide", use_container_width=True)
-st.sidebar.markdown("---")
-st.sidebar.info("Model Accuracy: **92.2%**\n\nSensor Target: **100 Hz**")
 
 # --- 4. LOAD AI MODEL ---
 @st.cache_resource
