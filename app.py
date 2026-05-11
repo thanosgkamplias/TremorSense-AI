@@ -65,7 +65,7 @@ st.markdown("""
 st.divider()
 
 # --- 3. SIDEBAR: MODE SELECTION ---
-st.sidebar.header("⚙️ System Settings")
+st.sidebar.header("System Settings")
 
 mode = st.sidebar.radio(
     "Data Source Mode:",
