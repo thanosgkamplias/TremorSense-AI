@@ -4,16 +4,6 @@ from tensorflow.keras.models import load_model
 import pandas as pd
 import time
 from collections import deque
-from PIL import Image
-
-# Φόρτωση της εικόνας
-icon_image = Image.open("tremorsense_page_icon.png") # Σιγουρέψου για την κατάληξη .png ή .jpg
-
-st.set_page_config(
-    page_title="TremorSense AI",
-    layout="centered",
-    page_icon=icon_image  # Εδώ βάζουμε το αντικείμενο της εικόνας
-)
 
 # --- ΠΡΟΣΤΑΣΙΑ ΓΙΑ ΤΟ CLOUD DEPLOYMENT ---
 try:
