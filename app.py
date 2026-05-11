@@ -157,10 +157,17 @@ def update_dashboard(window_data, pred_buffer):
     else:
         status_placeholder.warning(f"DIAGNOSIS: **{winner_name}**")
         
-    # 5. UPDATE CHART
+# 5. UPDATE CHART (Kinematic Magnitude)
     df_chart = pd.DataFrame(window_data, columns=['accX', 'accY', 'accZ', 'gyrX', 'gyrY', 'gyrZ', 'magX', 'magY', 'magZ'])
     df_chart['Tremor_Magnitude'] = np.sqrt(df_chart['accX']**2 + df_chart['accY']**2 + df_chart['accZ']**2)
-    chart_placeholder.line_chart(df_chart['Tremor_Magnitude'], height=250)
+    
+    # Προσθέσαμε x_label και y_label για επαγγελματικό γράφημα!
+    chart_placeholder.line_chart(
+        df_chart['Tremor_Magnitude'], 
+        height=250,
+        x_label="Time Window (100 Samples = 1 Second)",
+        y_label="Tremor Magnitude (Acceleration)"
+    )
     
     # 6. UPDATE PROGRESS BARS
     prog_ess.progress(float(smoothed_predictions[0]), text=f"Essential: {smoothed_predictions[0]*100:.1f}%")
