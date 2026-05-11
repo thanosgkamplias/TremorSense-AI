@@ -32,13 +32,6 @@ st.markdown("""
         display: block;
         margin: 0 auto;                     
     }
-
-    /* Αναγκάζει το κρυφό κείμενο του Streamlit να υπακούσει */
-    div.stButton > button:first-child p {
-        text-align: center !important;
-        margin: 0 !important;
-        width: 100% !important;
-    }
     
     h1, h2, h3 {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -54,7 +47,7 @@ st.markdown("""
 
 # 1. Προσθήκη του Logo στο πάνω μέρος του Sidebar
 try:
-    st.sidebar.image("tremorsense_logo_sidebar.png", use_container_width=True)
+    st.sidebar.image("tremorsense_logo.png", use_container_width=True)
     st.sidebar.markdown("<br>", unsafe_allow_html=True) # Προσθέτει λίγο κενό χώρο (ανάσα) κάτω από το logo
 except:
     pass # Αν δεν βρει το αρχείο, απλά προχωράει χωρίς να βγάλει error
