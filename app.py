@@ -100,6 +100,9 @@ st.sidebar.info("Model Accuracy: **92.2%**\n\nSensor Target: **100 Hz**")
 # ΣΕΛΙΔΑ 2: EDUCATIONAL GUIDE (Εμφανίζεται όταν πατηθεί το κουμπί)
 # =====================================================================
 if show_guide:
+     # Κουμπί επιστροφής. Όταν πατηθεί, το Streamlit κάνει refresh και επειδή 
+    # το πλαϊνό κουμπί δεν είναι πλέον πατημένο, γυρνάει αυτόματα στο Dashboard!
+    st.button("⬅️ Back to AI Dashboard") 
     st.title("📖 Understanding Tremor Pathologies")
     st.markdown("Welcome to the educational guide. This section explains the different types of tremors our AI classifies and provides instructions on how to physically simulate them if you are testing the system locally with your own hardware.")
     st.divider()
@@ -129,10 +132,6 @@ if show_guide:
     """)
     
     st.divider()
-    
-    # Κουμπί επιστροφής. Όταν πατηθεί, το Streamlit κάνει refresh και επειδή 
-    # το πλαϊνό κουμπί δεν είναι πλέον πατημένο, γυρνάει αυτόματα στο Dashboard!
-    st.button("⬅️ Back to AI Dashboard") 
     
     st.stop() 
 
