@@ -29,7 +29,7 @@ st.markdown("""
         font-weight: 500;
         box-shadow: none;                   
         transition: all 0.2s ease;
-        display: block;
+        display: flex;
         justify-content: center;
         align-items: center;
         margin: 0 auto;                     
