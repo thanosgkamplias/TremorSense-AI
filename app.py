@@ -109,6 +109,45 @@ elif mode == "☁️ Cloud Demo (Playback)":
         ("Normal (Healthy Baseline)", "Parkinson's Disease", "Essential Tremor")
     )
 
+# =====================================================================
+# ΣΕΛΙΔΑ 2: EDUCATIONAL GUIDE (Εμφανίζεται όταν πατηθεί το κουμπί)
+# =====================================================================
+if show_guide:
+    # Κουμπί επιστροφής. Όταν πατηθεί, το Streamlit κάνει refresh και επειδή 
+    # το πλαϊνό κουμπί δεν είναι πλέον πατημένο, γυρνάει αυτόματα στο Dashboard!
+    st.button("⬅️ Back to AI Dashboard") 
+    st.title("📖 Understanding Tremor Pathologies")
+    st.markdown("Welcome to the educational guide. This section explains the different types of tremors our AI classifies and provides instructions on how to physically simulate them if you are testing the system locally with your own hardware.")
+    st.divider()
+
+    # 1. Normal
+    st.subheader("✅ Normal (Healthy Baseline)")
+    st.markdown("""
+    **What it is:** Everyone has a tiny, invisible baseline tremor called a *physiologic tremor*. It is completely normal and usually not visible to the naked eye.
+    * **Frequency:** Typically high frequency (8-12 Hz) but with extremely low, almost imperceptible amplitude.
+    * **How to simulate:** Rest your hand holding the sensor on a table, or hold it in the air while keeping your hand as perfectly still and relaxed as possible. 
+    """)
+
+    # 2. Parkinson's
+    st.subheader("⚠️ Parkinson's Disease (Resting Tremor)")
+    st.markdown("""
+    **What it is:** The classic tremor associated with Parkinson's disease is a *resting tremor*. It occurs when the muscle is relaxed and fully supported against gravity (e.g., hands resting in the lap). It often looks like a "pill-rolling" motion of the fingers. It typically decreases or stops during voluntary movement.
+    * **Frequency:** Low frequency, typically **4 to 6 Hz**.
+    * **How to simulate:** Rest your arm completely flat on a desk or your leg. Vibrate the sensor slowly and rhythmically (about 4 to 6 beats per second). Stop shaking immediately if you lift your hand.
+    """)
+
+    # 3. Essential
+    st.subheader("🟠 Essential Tremor (Action Tremor)")
+    st.markdown("""
+    **What it is:** Essential tremor is the most common movement disorder. Unlike Parkinson's, it is an *action or postural tremor*. It becomes most noticeable when you are using your hands to do something (like holding a glass of water, writing, or pointing) or holding your arms outstretched against gravity.
+    * **Frequency:** Medium to high frequency, typically **4 to 12 Hz** (usually faster than Parkinson's).
+    * **How to simulate:** Hold the sensor outstretched in the air (unsupported). Vibrate your hand rapidly (faster than the Parkinson's simulation) while trying to maintain that posture or while moving the sensor toward a target.
+    """)
+    
+    st.divider()
+
+    st.stop()
+
 # --- NEW: INFO SECTION (Άμεσο Κουμπί) ---
 st.sidebar.markdown("---")
 show_guide = st.sidebar.button("🛈︎ Medical & Simulation Guide", use_container_width=True)
