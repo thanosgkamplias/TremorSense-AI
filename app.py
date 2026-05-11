@@ -103,7 +103,7 @@ if mode == "🔌 Live Hardware (USB)":
         
 elif mode == "☁️ Cloud Demo (Playback)":
     st.sidebar.markdown("---")
-    st.sidebar.subheader("☁️ Playback Options")
+    st.sidebar.subheader("Playback Options")
     demo_class = st.sidebar.selectbox(
         "Select Pathology to Simulate:",
         ("Normal (Healthy Baseline)", "Parkinson's Disease", "Essential Tremor")
