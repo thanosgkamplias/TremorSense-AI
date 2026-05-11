@@ -30,6 +30,8 @@ st.markdown("""
         box-shadow: none;                   
         transition: all 0.2s ease;
         display: block;
+        justify-content: center;
+        align-items: center;
         margin: 0 auto;                     
     }
     div.stButton > button:first-child:hover {
