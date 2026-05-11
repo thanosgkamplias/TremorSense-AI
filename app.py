@@ -37,6 +37,13 @@ st.markdown("""
         color: #1565C0;
         border-color: #1565C0;
     }
+
+    /* Αναγκάζει το κρυφό κείμενο του Streamlit να υπακούσει */
+    div.stButton > button:first-child p {
+        text-align: center !important;
+        margin: 0 !important;
+        width: 100% !important;
+    }
     
     h1, h2, h3 {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
