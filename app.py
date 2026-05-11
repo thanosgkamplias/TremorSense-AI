@@ -100,33 +100,63 @@ if show_guide:
     # Κουμπί επιστροφής. Όταν πατηθεί, το Streamlit κάνει refresh και επειδή 
     # το πλαϊνό κουμπί δεν είναι πλέον πατημένο, γυρνάει αυτόματα στο Dashboard!
     st.button("❮ Back to AI Dashboard") 
-    st.title("Understanding Tremor Pathologies")
-    st.markdown("Welcome to the educational guide. This section explains the different types of tremors our AI classifies and provides instructions on how to physically simulate them if you are testing the system locally with your own hardware.")
-    st.divider()
+# Διακόπτης επιλογής γλώσσας
+    lang = st.radio("Select Language / Επιλογή Γλώσσας:", ("🇬🇧 English", "🇬🇷 Ελληνικά"), horizontal=True)
+    
+    if lang == "🇬🇧 English":
+        st.title("📖 Understanding Tremor Pathologies")
+        st.markdown("Welcome to the educational guide. This section explains the different types of tremors our AI classifies and provides instructions on how to physically simulate them if you are testing the system locally with your own hardware.")
+        st.divider()
 
-    # 1. Normal
-    st.subheader("✅ Normal (Healthy Baseline)")
-    st.markdown("""
-    **What it is:** Everyone has a tiny, invisible baseline tremor called a *physiologic tremor*. It is completely normal and usually not visible to the naked eye.
-    * **Frequency:** Typically high frequency (8-12 Hz) but with extremely low, almost imperceptible amplitude.
-    * **How to simulate:** Rest your hand holding the sensor on a table, or hold it in the air while keeping your hand as perfectly still and relaxed as possible. 
-    """)
+        st.subheader("✅ Normal (Healthy Baseline)")
+        st.markdown("""
+        **What it is:** Everyone has a tiny, invisible baseline tremor called a *physiologic tremor*. It is completely normal and usually not visible to the naked eye.
+        * **Frequency:** Typically high frequency (8-12 Hz) but with extremely low, almost imperceptible amplitude.
+        * **How to simulate:** Rest your hand holding the sensor on a table, or hold it in the air while keeping your hand as perfectly still and relaxed as possible. 
+        """)
 
-    # 2. Parkinson's
-    st.subheader("⚠️ Parkinson's Disease (Resting Tremor)")
-    st.markdown("""
-    **What it is:** The classic tremor associated with Parkinson's disease is a *resting tremor*. It occurs when the muscle is relaxed and fully supported against gravity (e.g., hands resting in the lap). It often looks like a "pill-rolling" motion of the fingers. It typically decreases or stops during voluntary movement.
-    * **Frequency:** Low frequency, typically **4 to 6 Hz**.
-    * **How to simulate:** Rest your arm completely flat on a desk or your leg. Vibrate the sensor slowly and rhythmically (about 4 to 6 beats per second). Stop shaking immediately if you lift your hand.
-    """)
+        st.subheader("⚠️ Parkinson's Disease (Resting Tremor)")
+        st.markdown("""
+        **What it is:** The classic tremor associated with Parkinson's disease is a *resting tremor*. It occurs when the muscle is relaxed and fully supported against gravity (e.g., hands resting in the lap). It often looks like a "pill-rolling" motion of the fingers. It typically decreases or stops during voluntary movement.
+        * **Frequency:** Low frequency, typically **4 to 6 Hz**.
+        * **How to simulate:** Rest your arm completely flat on a desk or your leg. Vibrate the sensor slowly and rhythmically (about 4 to 6 beats per second). Stop shaking immediately if you lift your hand.
+        """)
 
-    # 3. Essential
-    st.subheader("🟠 Essential Tremor (Action Tremor)")
-    st.markdown("""
-    **What it is:** Essential tremor is the most common movement disorder. Unlike Parkinson's, it is an *action or postural tremor*. It becomes most noticeable when you are using your hands to do something (like holding a glass of water, writing, or pointing) or holding your arms outstretched against gravity.
-    * **Frequency:** Medium to high frequency, typically **4 to 12 Hz** (usually faster than Parkinson's).
-    * **How to simulate:** Hold the sensor outstretched in the air (unsupported). Vibrate your hand rapidly (faster than the Parkinson's simulation) while trying to maintain that posture or while moving the sensor toward a target.
-    """)
+        st.subheader("🟠 Essential Tremor (Action Tremor)")
+        st.markdown("""
+        **What it is:** Essential tremor is the most common movement disorder. Unlike Parkinson's, it is an *action or postural tremor*. It becomes most noticeable when you are using your hands to do something (like holding a glass of water, writing, or pointing) or holding your arms outstretched against gravity.
+        * **Frequency:** Medium to high frequency, typically **4 to 12 Hz** (usually faster than Parkinson's).
+        * **How to simulate:** Hold the sensor outstretched in the air (unsupported). Vibrate your hand rapidly (faster than the Parkinson's simulation) while trying to maintain that posture or while moving the sensor toward a target.
+        """)
+        
+        st.divider()
+        st.button("⬅️ Back to AI Dashboard") 
+
+    else:
+        st.title("📖 Κατανόηση Παθολογιών Τρόμου")
+        st.markdown("Καλώς ήρθατε στον εκπαιδευτικό οδηγό. Αυτή η ενότητα εξηγεί τους διαφορετικούς τύπους τρόμου που ταξινομεί το AI μας και παρέχει οδηγίες για το πώς να τους προσομοιώσετε φυσικά, αν δοκιμάζετε το σύστημα τοπικά με το δικό σας hardware.")
+        st.divider()
+
+        st.subheader("✅ Φυσιολογικό (Healthy Baseline)")
+        st.markdown("""
+        **Τι είναι:** Όλοι έχουν έναν μικρό, αόρατο τρόμο βάσης που ονομάζεται *φυσιολογικός τρόμος*. Είναι απολύτως φυσιολογικός και συνήθως δεν είναι ορατός με γυμνό μάτι.
+        * **Συχνότητα:** Συνήθως υψηλή συχνότητα (8-12 Hz) αλλά με εξαιρετικά χαμηλό, σχεδόν ανεπαίσθητο πλάτος.
+        * **Πώς να το προσομοιώσετε:** Ακουμπήστε το χέρι σας που κρατάει τον αισθητήρα σε ένα τραπέζι, ή κρατήστε το στον αέρα διατηρώντας το χέρι σας όσο πιο ακίνητο και χαλαρό γίνεται.
+        """)
+
+        st.subheader("⚠️ Νόσος Πάρκινσον (Τρόμος Ηρεμίας)")
+        st.markdown("""
+        **Τι είναι:** Ο κλασικός τρόμος που σχετίζεται με τη νόσο του Πάρκινσον είναι ο *τρόμος ηρεμίας*. Εμφανίζεται όταν ο μυς είναι χαλαρός και υποστηρίζεται πλήρως ενάντια στη βαρύτητα (π.χ. χέρια που ακουμπούν στα πόδια). Συχνά μοιάζει με κίνηση των δακτύλων σαν να "μετράνε κέρματα". Συνήθως μειώνεται ή σταματά κατά τη διάρκεια της εκούσιας κίνησης.
+        * **Συχνότητα:** Χαμηλή συχνότητα, συνήθως **4 έως 6 Hz**.
+        * **Πώς να το προσομοιώσετε:** Ακουμπήστε το χέρι σας εντελώς επίπεδα σε ένα γραφείο ή στο πόδι σας. Δονήστε τον αισθητήρα αργά και ρυθμικά (περίπου 4 έως 6 χτύπους το δευτερόλεπτο). Σταματήστε αμέσως το τρέμουλο αν σηκώσετε το χέρι σας.
+        """)
+
+        st.subheader("🟠 Ιδιοπαθής Τρόμος (Τρόμος Δράσης)")
+        st.markdown("""
+        **Τι είναι:** Ο ιδιοπαθής τρόμος (Essential tremor) είναι η πιο κοινή κινητική διαταραχή. Αντίθετα με το Πάρκινσον, είναι ένας *τρόμος δράσης ή στάσης*. Γίνεται πιο αισθητός όταν χρησιμοποιείτε τα χέρια σας για να κάνετε κάτι (όπως να κρατήσετε ένα ποτήρι νερό, να γράψετε ή να δείξετε) ή όταν κρατάτε τα χέρια σας τεντωμένα ενάντια στη βαρύτητα.
+        * **Συχνότητα:** Μεσαία έως υψηλή συχνότητα, συνήθως **4 έως 12 Hz** (συχνά πιο γρήγορος από το Πάρκινσον).
+        * **Πώς να το προσομοιώσετε:** Κρατήστε τον αισθητήρα τεντωμένο στον αέρα (χωρίς υποστήριξη). Δονήστε το χέρι σας γρήγορα (πιο γρήγορα από την προσομοίωση του Πάρκινσον) προσπαθώντας να διατηρήσετε αυτή τη στάση ή ενώ κινείτε τον αισθητήρα προς έναν στόχο.
+        """)
     
     st.stop()
 
