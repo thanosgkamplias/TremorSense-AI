@@ -54,7 +54,7 @@ st.markdown("""
 
 # 1. Προσθήκη του Logo στο πάνω μέρος του Sidebar
 try:
-    st.sidebar.image("tremorsense_logo_sidebar.png.png", use_container_width=True)
+    st.sidebar.image("tremorsense_logo_sidebar.png", use_container_width=True)
     st.sidebar.markdown("<br>", unsafe_allow_html=True) # Προσθέτει λίγο κενό χώρο (ανάσα) κάτω από το logo
 except:
     pass # Αν δεν βρει το αρχείο, απλά προχωράει χωρίς να βγάλει error
