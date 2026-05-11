@@ -93,9 +93,9 @@ if 'current_page' not in st.session_state:
     st.session_state.current_page = "dashboard"
     
 st.sidebar.markdown("---")
-if: st.sidebar.button("🛈 Medical & Simulation Guide", use_container_width=True)
-st.sidebar.markdown("---")
-st.sidebar.info("Model Accuracy: **92.2%**\n\nSensor Target: **100 Hz**")
+if st.sidebar.button("🛈 Medical & Simulation Guide", use_container_width=True):
+    st.sidebar.markdown("---")
+    st.sidebar.info("Model Accuracy: **92.2%**\n\nSensor Target: **100 Hz**")
 
 # =====================================================================
 # ΣΕΛΙΔΑ 2: EDUCATIONAL GUIDE (Εμφανίζεται όταν πατηθεί το κουμπί)
