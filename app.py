@@ -182,7 +182,7 @@ if st.button(button_text, use_container_width=False):
     if mode == "🔌 Live Hardware (USB)":
         if not HAS_SERIAL or not selected_port:
             # ΝΕΟ ΜΗΝΥΜΑ ΑΝΤΙ ΓΙΑ ERROR
-            st.warning("⚠️ **Hardware Required:** To run real-time inference, an Arduino must be connected via USB. Please switch to the **Cloud Demo (Playback)** mode from the sidebar to evaluate the AI's performance.")
+            st.warning("⚠️ **Hardware Required:** To run real-time inference, an Arduino must be connected via USB. Please switch to the ***Cloud Demo (Playback)*** mode from the sidebar to evaluate the AI's performance.")
             st.stop()
 
         try:
