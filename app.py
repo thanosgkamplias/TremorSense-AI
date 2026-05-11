@@ -14,8 +14,9 @@ except ImportError:
     HAS_SERIAL = False
 
 # --- 1. Page Configuration & Custom CSS ---
-st.set_page_config(page_title="TremorSense AI", layout="centered", page_icon="🧠")
+st.set_page_config(page_title="TremorSense AI", layout="centered", page_icon="tremorsense_page_icon.png")
 
+# Custom CSS for a modern, clinical, and minimal UI
 st.markdown("""
     <style>
     div.stButton > button:first-child {
@@ -39,17 +40,39 @@ st.markdown("""
     h1, h2, h3 {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
+    
+    /* --- ΜΕΙΩΣΗ ΚΕΝΟΥ DIVIDER --- */
+    div[data-testid="stMarkdownContainer"] hr {
+        margin-top: 10px !important;   
+        margin-bottom: 15px !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
-# --- 2. SIDEBAR (Λογότυπο & Ρυθμίσεις) ---
+# --- 2. HEADER SECTION ---
+try:
+    st.image("tremorsense_logo.png", width=300)
+except:
+    st.title("🧠 TremorSense AI") # Fallback if logo is missing
+st.markdown("#### Real-time Neurological Tremor Analysis System")
+
+st.markdown("""
+    <p style='font-size: 16px; color: #808495; line-height: 1.5;'>
+        An AI-powered application that analyzes motion data from wearable sensors to instantly 
+        detect and differentiate between Parkinson's Disease, Essential Tremor, and healthy movements.
+    </p>
+""", unsafe_allow_html=True)
+st.divider()
+
+# 1. Προσθήκη του Logo στο πάνω μέρος του Sidebar
 try:
     st.sidebar.image("tremorsense_logo.png", use_container_width=True)
-    st.sidebar.markdown("<br>", unsafe_allow_html=True)
+    st.sidebar.markdown("<br>", unsafe_allow_html=True) # Προσθέτει λίγο κενό χώρο (ανάσα) κάτω από το logo
 except:
-    pass 
+    pass # Αν δεν βρει το αρχείο, απλά προχωράει χωρίς να βγάλει error
 
-st.sidebar.header("⚙️ System Settings")
+# --- 3. SIDEBAR: MODE SELECTION ---
+st.sidebar.header("System Settings")
 
 mode = st.sidebar.radio(
     "Data Source Mode:",
@@ -61,20 +84,16 @@ demo_class = None
 
 if mode == "🔌 Live Hardware (USB)":
     if not HAS_SERIAL:
-        st.sidebar.info(
-            "**Edge IoT Mode**\n\n"
-            "No hardware detected.\n\n"
-            "∘ **Viewing online?** Switch to **Cloud Demo (Playback)** above to see the AI in action.\n\n"
-            "∘ **Running locally?** Plug in your Arduino Nano 33 BLE via USB."
-        )
+        st.sidebar.info("💡 **Edge IoT Mode:** Live USB streaming is designed for local environments. Switch to **Cloud Demo**.")
     else:
         available_ports = [port.device for port in serial.tools.list_ports.comports()]
         if not available_ports:
+            # ΤΟ ΝΕΟ ΕΠΑΓΓΕΛΜΑΤΙΚΟ ΜΗΝΥΜΑ
             st.sidebar.info(
                 "**Edge IoT Mode**\n\n"
                 "No hardware detected.\n\n"
-                "∘ **Viewing online?** Switch to **Cloud Demo (Playback)** above to see the AI in action.\n\n"
-                "∘ **Running locally?** Plug in your Arduino Nano 33 BLE via USB."
+                "● **Viewing online?** Switch to **Cloud Demo (Playback)** above to see the AI in action.\n\n"
+                "● **Running locally?** Plug in your Arduino Nano 33 BLE via USB."
             )
         else:
             selected_port = st.sidebar.selectbox("Select Device Port", available_ports)
@@ -87,73 +106,10 @@ elif mode == "☁️ Cloud Demo (Playback)":
         ("Normal (Healthy Baseline)", "Parkinson's Disease", "Essential Tremor")
     )
 
-# --- NEW: INFO SECTION (Άμεσο Κουμπί) ---
-st.sidebar.markdown("---")
-st.sidebar.subheader("ℹ️ Info")
-show_guide = st.sidebar.button("📖 Medical & Simulation Guide", use_container_width=True)
-
 st.sidebar.markdown("---")
 st.sidebar.info("Model Accuracy: **92.2%**\n\nSensor Target: **100 Hz**")
 
-
-# =====================================================================
-# ΣΕΛΙΔΑ 2: EDUCATIONAL GUIDE (Εμφανίζεται όταν πατηθεί το κουμπί)
-# =====================================================================
-if show_guide:
-     # Κουμπί επιστροφής. Όταν πατηθεί, το Streamlit κάνει refresh και επειδή 
-    # το πλαϊνό κουμπί δεν είναι πλέον πατημένο, γυρνάει αυτόματα στο Dashboard!
-    st.button("⬅️ Back to AI Dashboard") 
-    st.title("📖 Understanding Tremor Pathologies")
-    st.markdown("Welcome to the educational guide. This section explains the different types of tremors our AI classifies and provides instructions on how to physically simulate them if you are testing the system locally with your own hardware.")
-    st.divider()
-
-    # 1. Normal
-    st.subheader("✅ Normal (Healthy Baseline)")
-    st.markdown("""
-    **What it is:** Everyone has a tiny, invisible baseline tremor called a *physiologic tremor*. It is completely normal and usually not visible to the naked eye.
-    * **Frequency:** Typically high frequency (8-12 Hz) but with extremely low, almost imperceptible amplitude.
-    * **How to simulate:** Rest your hand holding the sensor on a table, or hold it in the air while keeping your hand as perfectly still and relaxed as possible. 
-    """)
-
-    # 2. Parkinson's
-    st.subheader("⚠️ Parkinson's Disease (Resting Tremor)")
-    st.markdown("""
-    **What it is:** The classic tremor associated with Parkinson's disease is a *resting tremor*. It occurs when the muscle is relaxed and fully supported against gravity (e.g., hands resting in the lap). It often looks like a "pill-rolling" motion of the fingers. It typically decreases or stops during voluntary movement.
-    * **Frequency:** Low frequency, typically **4 to 6 Hz**.
-    * **How to simulate:** Rest your arm completely flat on a desk or your leg. Vibrate the sensor slowly and rhythmically (about 4 to 6 beats per second). Stop shaking immediately if you lift your hand.
-    """)
-
-    # 3. Essential
-    st.subheader("🟠 Essential Tremor (Action Tremor)")
-    st.markdown("""
-    **What it is:** Essential tremor is the most common movement disorder. Unlike Parkinson's, it is an *action or postural tremor*. It becomes most noticeable when you are using your hands to do something (like holding a glass of water, writing, or pointing) or holding your arms outstretched against gravity.
-    * **Frequency:** Medium to high frequency, typically **4 to 12 Hz** (usually faster than Parkinson's).
-    * **How to simulate:** Hold the sensor outstretched in the air (unsupported). Vibrate your hand rapidly (faster than the Parkinson's simulation) while trying to maintain that posture or while moving the sensor toward a target.
-    """)
-    
-    st.divider()
-    
-    st.stop() 
-
-
-# =====================================================================
-# ΣΕΛΙΔΑ 1: AI DASHBOARD (Το κανονικό σου πρόγραμμα)
-# =====================================================================
-
-# --- 3. HEADER SECTION (Κεντρική Οθόνη) ---
-st.title("🧠 TremorSense AI")
-st.markdown("#### Real-time Neurological Tremor Analysis System")
-
-st.markdown("""
-    <p style='font-size: 16px; color: #808495; line-height: 1.5;'>
-        An AI-powered application that analyzes motion data from wearable sensors to instantly 
-        detect and differentiate between Parkinson's Disease, Essential Tremor, and healthy movements.
-    </p>
-""", unsafe_allow_html=True)
-
-st.divider()
-
-# --- 4. LOAD AI MODEL (Αθόρυβη φόρτωση) ---
+# --- 4. LOAD AI MODEL ---
 @st.cache_resource
 def load_ai_model():
     return load_model('tremor_model.keras')
@@ -164,6 +120,7 @@ except Exception as e:
     st.error("Failed to load 'tremor_model.keras'. Please ensure the file is in the directory.")
     st.stop()
 
+# Model Output Classes mapping
 classes = {
     0: ("🟠 ESSENTIAL TREMOR (Action)", "warning"),
     1: ("✅ NORMAL (No Tremor)", "success"),
@@ -180,19 +137,25 @@ prog_ess = col1.empty()
 prog_norm = col2.empty()
 prog_park = col3.empty()
 
-# --- 6. CORE UPDATE FUNCTION ---
+# --- 6. CORE UPDATE FUNCTION (ME SMOOTHING) ---
 def update_dashboard(window_data, pred_buffer):
+    """ window_data is a numpy array of shape (100, 9) """
+    
+    # 1. DATA PREPROCESSING
     window_centered = window_data - np.mean(window_data, axis=0)
     input_data = window_centered.reshape(1, 100, 9)
     
+    # 2. RAW AI PREDICTION
     raw_predictions = model.predict(input_data, verbose=0)[0]
     
+    # 3. SMOOTHING
     pred_buffer.append(raw_predictions)
     smoothed_predictions = np.mean(pred_buffer, axis=0)
     
     winner_index = np.argmax(smoothed_predictions)
     winner_name, status_type = classes[winner_index]
     
+    # 4. UPDATE UI STATUS
     if status_type == "success":
         status_placeholder.success(f"DIAGNOSIS: **{winner_name}**")
     elif status_type == "error":
@@ -200,9 +163,11 @@ def update_dashboard(window_data, pred_buffer):
     else:
         status_placeholder.warning(f"DIAGNOSIS: **{winner_name}**")
         
+# 5. UPDATE CHART (Kinematic Magnitude)
     df_chart = pd.DataFrame(window_data, columns=['accX', 'accY', 'accZ', 'gyrX', 'gyrY', 'gyrZ', 'magX', 'magY', 'magZ'])
     df_chart['Tremor_Magnitude'] = np.sqrt(df_chart['accX']**2 + df_chart['accY']**2 + df_chart['accZ']**2)
     
+    # Προσθέσαμε x_label και y_label για επαγγελματικό γράφημα!
     chart_placeholder.line_chart(
         df_chart['Tremor_Magnitude'], 
         height=250,
@@ -210,9 +175,11 @@ def update_dashboard(window_data, pred_buffer):
         y_label="Tremor Magnitude (Acceleration)"
     )
     
+    # 6. UPDATE PROGRESS BARS
     prog_ess.progress(float(smoothed_predictions[0]), text=f"Essential: {smoothed_predictions[0]*100:.1f}%")
     prog_norm.progress(float(smoothed_predictions[1]), text=f"Normal: {smoothed_predictions[1]*100:.1f}%")
     prog_park.progress(float(smoothed_predictions[2]), text=f"Parkinson's: {smoothed_predictions[2]*100:.1f}%")
+
 
 # --- 7. THE MAIN EXECUTION LOOP ---
 button_text = "Start Live Diagnosis" if mode == "🔌 Live Hardware (USB)" else f"Start {demo_class} Simulation"
@@ -222,9 +189,13 @@ if st.button(button_text, use_container_width=False):
     
     prediction_buffer = deque(maxlen=5) 
     
+# ==========================================
+    # MODE A: LIVE USB STREAMING
+    # ==========================================
     if mode == "🔌 Live Hardware (USB)":
         if not HAS_SERIAL or not selected_port:
-            st.warning("**Hardware Required:** To run real-time inference, an Arduino must be connected via USB. Please switch to the **Cloud Demo (Playback)** mode from the sidebar to evaluate the AI's performance.", icon="⚠️")
+            # ΝΕΟ ΜΗΝΥΜΑ ΑΝΤΙ ΓΙΑ ERROR
+            st.warning("⚠️ **Hardware Required:** To run real-time inference, an Arduino must be connected via USB. Please switch to the **Cloud Demo (Playback)** mode from the sidebar to evaluate the AI's performance.")
             st.stop()
 
         try:
@@ -243,12 +214,15 @@ if st.button(button_text, use_container_width=False):
                     window_array = np.array(buffer)
                     update_dashboard(window_array, prediction_buffer) 
                     buffer = [] 
-
+                    
         except serial.SerialException:
             st.error(f"Connection failed! Make sure {selected_port} is not in use by the Arduino IDE.")
         except Exception as e:
             st.error(f"An error occurred: {e}")
 
+    # ==========================================
+    # MODE B: CLOUD DEMO (PLAYBACK) - 1 MINUTE DURATION
+    # ==========================================
     elif mode == "☁️ Cloud Demo (Playback)":
         st.toast(f"Starting 60-second Simulation for {demo_class}...", icon="☁️")
         
