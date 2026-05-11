@@ -110,6 +110,7 @@ elif mode == "☁️ Cloud Demo (Playback)":
 # --- NEW: INFO SECTION (Άμεσο Κουμπί) ---
 st.sidebar.markdown("---")
 show_guide = st.sidebar.button("🛈︎ Medical & Simulation Guide", use_container_width=True)
+st.sidebar.markdown("---")
 st.sidebar.info("Model Accuracy: **92.2%**\n\nSensor Target: **100 Hz**")
 
 # --- 4. LOAD AI MODEL ---
