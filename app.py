@@ -32,11 +32,6 @@ st.markdown("""
         display: block;
         margin: 0 auto;                     
     }
-    div.stButton > button:first-child:hover {
-        background-color: rgba(30, 136, 229, 0.08); 
-        color: #1565C0;
-        border-color: #1565C0;
-    }
 
     /* Αναγκάζει το κρυφό κείμενο του Streamlit να υπακούσει */
     div.stButton > button:first-child p {
