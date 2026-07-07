@@ -16,7 +16,7 @@ A critical aspect of medical AI is minimizing False Positives for severe conditi
 </p>
 *Left: Multiclass ROC Curve showcasing outstanding AUC scores. Right: Training history and Test-Set Confusion Matrix.*
 
-## 🛠️ Architecture & ML Engineering Practices
+## Architecture & ML Engineering Practices
 
 ### 1. 1D-CNN for Time-Series Kinematics
 Instead of relying on manual feature extraction (e.g., computing FFTs or spectral entropy), the core engine is a **1-Dimensional Convolutional Neural Network (1D-CNN)**. It automatically learns spatial-temporal hierarchies directly from raw, zero-centered multi-axis sensor data (100Hz windows).
@@ -36,8 +36,8 @@ The model ingests 6 Degrees of Freedom (3-axis Acc, 3-axis Gyr). Below is a visu
 To prove the model's operational readiness, I developed a Streamlit UI that acts as the digital twin of a medical interface.
 
 **Modes of Operation:**
-1. **🔌 Edge IoT Mode (Live USB):** Connect an Arduino Nano 33 BLE via serial port. The app buffers 100-sample windows, applies zero-centering, and feeds the `keras` model for live inference.
-2. **☁️ Cloud Demo (Playback):** Don't have the hardware? Select a pathology from the sidebar to stream 60 seconds of historical test data through the AI, simulating a live environment. Includes an exponential moving average (deque buffer) to stabilize UI predictions.
+1. **Edge IoT Mode (Live USB):** Connect an Arduino Nano 33 BLE via serial port. The app buffers 100-sample windows, applies zero-centering, and feeds the `keras` model for live inference.
+2. **Cloud Demo (Playback):** Don't have the hardware? Select a pathology from the sidebar to stream 60 seconds of historical test data through the AI, simulating a live environment. Includes an exponential moving average (deque buffer) to stabilize UI predictions.
 
 ## How to Run
 
