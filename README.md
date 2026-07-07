@@ -43,8 +43,8 @@ To prove the model's operational readiness, I developed a Streamlit UI that acts
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/thanosgkamplias/real-estate-price-predictor.git
-   cd real-estate-price-predictor
+   git clone https://https://github.com/thanosgkamplias/TremorSense-AI
+   cd TremorSense-AI
    
 2. Install the required dependencies:
    ```bash
@@ -52,4 +52,5 @@ To prove the model's operational readiness, I developed a Streamlit UI that acts
    
 3. Open the Jupyter Notebook to view the code, EDA, and run the interactive prediction cell:
    ```bash
-   jupyter notebook real_estate_price_prediction.ipynb
+   cd src
+   streamlit run app.py
