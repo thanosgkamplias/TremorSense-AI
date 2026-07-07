@@ -43,7 +43,7 @@ To prove the model's operational readiness, I developed a Streamlit UI that acts
 
 1. Clone the repository:
    ```bash
-   git clone https://https://github.com/thanosgkamplias/TremorSense-AI
+   git clone https://github.com/thanosgkamplias/TremorSense-AI
    cd TremorSense-AI
    
 2. Install the required dependencies:
@@ -54,3 +54,6 @@ To prove the model's operational readiness, I developed a Streamlit UI that acts
    ```bash
    cd src
    streamlit run app.py
+
+## Dataset Note
+The tremor_dataset.csv contains ~120,000 instances of IMU data. It has been pre-compiled from raw .cbor files generated during data collection sessions.
