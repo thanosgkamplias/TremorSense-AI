@@ -41,16 +41,17 @@ To prove the model's operational readiness, I developed a Streamlit UI that acts
 
 ## How to Run Locally
 
-1. **Clone the repository:**
-   
+1. Clone the repository
 ```bash
    git clone [https://github.com/thanosgkamplias/TremorSense-AI.git](https://github.com/thanosgkamplias/TremorSense-AI.git)
    cd TremorSense-AI
 
 2. Install Dependencies:
+```bash
    pip install -r requirements.txt
 
 3. Launch the Real-time Dashboard:
+```bash
    cd src
    streamlit run app.py
 
