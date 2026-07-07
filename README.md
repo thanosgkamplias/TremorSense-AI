@@ -45,6 +45,7 @@ To prove the model's operational readiness, I developed a Streamlit UI that acts
 ```bash
    git clone [https://github.com/thanosgkamplias/TremorSense-AI.git](https://github.com/thanosgkamplias/TremorSense-AI.git)
    cd TremorSense-AI
+``` `
    
 2. Install Dependencies:
 ```bash
