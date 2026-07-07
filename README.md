@@ -55,5 +55,5 @@ To prove the model's operational readiness, I developed a Streamlit UI that acts
    cd src
    streamlit run app.py
 
-Dataset Note
+## Dataset Note
 The tremor_dataset.csv contains ~120,000 instances of IMU data. It has been pre-compiled from raw .cbor files generated during data collection sessions.
