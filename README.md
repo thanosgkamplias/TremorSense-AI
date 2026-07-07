@@ -39,22 +39,17 @@ To prove the model's operational readiness, I developed a Streamlit UI that acts
 1. **🔌 Edge IoT Mode (Live USB):** Connect an Arduino Nano 33 BLE via serial port. The app buffers 100-sample windows, applies zero-centering, and feeds the `keras` model for live inference.
 2. **☁️ Cloud Demo (Playback):** Don't have the hardware? Select a pathology from the sidebar to stream 60 seconds of historical test data through the AI, simulating a live environment. Includes an exponential moving average (deque buffer) to stabilize UI predictions.
 
-## How to Run Locally
+## How to Run
 
-1. Clone the repository
-```bash
-   git clone [https://github.com/thanosgkamplias/TremorSense-AI.git](https://github.com/thanosgkamplias/TremorSense-AI.git)
-   cd TremorSense-AI
-``` `
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/thanosgkamplias/real-estate-price-predictor.git
+   cd real-estate-price-predictor
    
-2. Install Dependencies:
-```bash
+2. Install the required dependencies:
+   ```bash
    pip install -r requirements.txt
-
-3. Launch the Real-time Dashboard:
-```bash
-   cd src
-   streamlit run app.py
-
-## Dataset Note
-The tremor_dataset.csv contains ~120,000 instances of IMU data. It has been pre-compiled from raw .cbor files generated during data collection sessions.
+   
+3. Open the Jupyter Notebook to view the code, EDA, and run the interactive prediction cell:
+   ```bash
+   jupyter notebook real_estate_price_prediction.ipynb
