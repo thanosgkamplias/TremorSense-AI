@@ -179,21 +179,40 @@ prog_park = col3.empty()
 def update_dashboard(window_data, pred_buffer):
     """ window_data is a numpy array of shape (100, 9) """
     
-    # 1. DATA PREPROCESSING
-    window_centered = window_data - np.mean(window_data, axis=0)
-    input_data = window_centered.reshape(1, 100, 9)
+    # --- DEBUGGING GHOST FIX ---
+    # 1. Βλέπουμε τι διαστάσεις περιμένει πραγματικά το μοντέλο σου
+    expected_shape = model.input_shape # π.χ. (None, 100, 9)
+    num_features_expected = expected_shape[-1] # Παίρνει το 9 (ή το 6 αν κάναμε λάθος!)
     
-    # 2. RAW AI PREDICTION
-    raw_predictions = model.predict(input_data, verbose=0)[0]
+    # 2. DATA PREPROCESSING
+    # Κρατάμε μόνο τον αριθμό των στηλών που θέλει το μοντέλο. 
+    # Αν θέλει 6, κόβουμε τα τελευταία 3 (τα magX, magY, magZ)
+    window_data_sliced = window_data[:, :num_features_expected]
     
-    # 3. SMOOTHING
+    # Κεντράρισμα
+    window_centered = window_data_sliced - np.mean(window_data_sliced, axis=0)
+    
+    # Μετατροπή στο σωστό Type (πολύ σημαντικό για TensorFlow)
+    window_centered = window_centered.astype(np.float32)
+    
+    # Προσθέτουμε τη διάσταση του Batch (1)
+    input_data = window_centered.reshape(1, window_centered.shape[0], window_centered.shape[1])
+    
+    # 3. RAW AI PREDICTION
+    try:
+        raw_predictions = model.predict(input_data, verbose=0)[0]
+    except Exception as e:
+        st.error(f"Prediction Error! Expected shape: {expected_shape}, but got: {input_data.shape}. Real error: {e}")
+        st.stop()
+    
+    # 4. SMOOTHING
     pred_buffer.append(raw_predictions)
     smoothed_predictions = np.mean(pred_buffer, axis=0)
     
     winner_index = np.argmax(smoothed_predictions)
     winner_name, status_type = classes[winner_index]
     
-    # 4. UPDATE UI STATUS
+    # 5. UPDATE UI STATUS
     if status_type == "success":
         status_placeholder.success(f"DIAGNOSIS: **{winner_name}**")
     elif status_type == "error":
@@ -201,11 +220,10 @@ def update_dashboard(window_data, pred_buffer):
     else:
         status_placeholder.warning(f"DIAGNOSIS: **{winner_name}**")
         
-# 5. UPDATE CHART (Kinematic Magnitude)
+    # 6. UPDATE CHART (Kinematic Magnitude)
     df_chart = pd.DataFrame(window_data, columns=['accX', 'accY', 'accZ', 'gyrX', 'gyrY', 'gyrZ', 'magX', 'magY', 'magZ'])
     df_chart['Tremor_Magnitude'] = np.sqrt(df_chart['accX']**2 + df_chart['accY']**2 + df_chart['accZ']**2)
     
-    # Προσθέσαμε x_label και y_label για επαγγελματικό γράφημα!
     chart_placeholder.line_chart(
         df_chart['Tremor_Magnitude'], 
         height=250,
@@ -213,11 +231,10 @@ def update_dashboard(window_data, pred_buffer):
         y_label="Tremor Magnitude (Acceleration)"
     )
     
-    # 6. UPDATE PROGRESS BARS
+    # 7. UPDATE PROGRESS BARS
     prog_ess.progress(float(smoothed_predictions[0]), text=f"Essential: {smoothed_predictions[0]*100:.1f}%")
     prog_norm.progress(float(smoothed_predictions[1]), text=f"Normal: {smoothed_predictions[1]*100:.1f}%")
     prog_park.progress(float(smoothed_predictions[2]), text=f"Parkinson's: {smoothed_predictions[2]*100:.1f}%")
-
 
 # --- 7. THE MAIN EXECUTION LOOP ---
 button_text = "Start Live Diagnosis" if mode == "🔌 Live Hardware (USB)" else f"Start {demo_class} Simulation"
