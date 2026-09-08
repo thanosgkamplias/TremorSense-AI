@@ -11,8 +11,9 @@ This project bridges the gap between hardware IoT sensors and Clinical Data Scie
 A critical aspect of medical AI is minimizing False Positives for severe conditions. As seen in the evaluation metrics, the model achieves near-perfect **Specificity for Parkinson's Disease**. This ensures that healthy individuals or those with benign essential tremors are rarely misclassified as having resting Parkinsonian tremors, making it a reliable screening concept.
 
 <p align="center">
-  <img src="assets/roc_curve_multiclass.png" width="48%">
-  <img src="assets/model_performance_curves.png" width="48%">
+  <img src="assets/roc_curve_multiclass.png" width="80%">
+  <br><br>
+  <img src="assets/model_performance_curves.png" width="80%">
 </p>
 *Left: Multiclass ROC Curve showcasing outstanding AUC scores. Right: Training history and Test-Set Confusion Matrix.*
 
