@@ -15,7 +15,7 @@ A critical aspect of medical AI is minimizing False Positives for severe conditi
   <br><br>
   <img src="assets/model_performance_curves.png" width="80%">
 </p>
-*Left: Multiclass ROC Curve showcasing outstanding AUC scores. Right: Training history and Test-Set Confusion Matrix.*
+Top: Multiclass ROC Curve showcasing outstanding AUC scores. Bottom: Training history and Test-Set Confusion Matrix.
 
 ## Architecture & ML Engineering Practices
 
